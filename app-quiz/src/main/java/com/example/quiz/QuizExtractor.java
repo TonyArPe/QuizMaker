@@ -10,8 +10,8 @@ package com.example.quiz;
  * Google Forms para la creacion del test y futura realizacion del mismo
  * por parte del alumno.
  */
-public class App {
+public class QuizExtractor {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        
     }
 }
