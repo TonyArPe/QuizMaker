@@ -9,15 +9,26 @@ import java.util.Scanner;
 
 import org.apache.poi.xwpf.usermodel.*;
 
+/**
+ * Clase principal que gestiona la selección y análisis de archivos Word
+ * para extraer preguntas de exámenes.
+ * @author TonyArPe
+ * @version 1.0
+ * @since 01/04/2025
+ */
+
 public class FileSelector {
 
-    private static final String DOCS_FOLDER = "app-quiz\\src\\docs";
-
+    private static final String DOCS_FOLDER = "app-quiz\\src\\docxFiles";
+    /**
+     * Método principal que inicia la aplicación.
+     * @param args Argumentos de línea de comandos (no utilizados).
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         File docsDirectory = new File(DOCS_FOLDER);
 
-        // Verificar si la carpeta 'docs' existe
+        // Verifica si la carpeta 'docs' existe
         if (!docsDirectory.exists() || !docsDirectory.isDirectory()) {
             System.out.println("La carpeta '" + DOCS_FOLDER
                     + "' no existe. Por favor, créala y coloca los archivos a analizar en ella.");
@@ -46,6 +57,11 @@ public class FileSelector {
         analyzeFile(selectedFile);
     }
 
+    /**
+     * Analiza el archivo proporcionado y extrae las preguntas de los test.
+     * 
+     * @param file Archivo .docx que será analizado.
+     */
     private static void analyzeFile(File file) {
         System.out.println("Analizando el archivo: " + file.getAbsolutePath());
         List<String> questions = new ArrayList<>();

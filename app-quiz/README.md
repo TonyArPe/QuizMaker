@@ -50,6 +50,8 @@ java -jar target/QuizMaker.jar
 
 - **Apache POI:** Biblioteca para manipulación de documentos de Microsoft Office.
 
+- **Javadoc:** Para la documentacion del codigo
+
 - **Google Forms API:** Para la integración y creación automatizada de formularios.
 
 ### Contribución
