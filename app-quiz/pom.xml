@@ -14,8 +14,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -25,6 +25,45 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
+     <!-- Apache POI -->
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-ooxml</artifactId>
+          <version>5.2.3</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-collections4</artifactId>
+          <version>4.4</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.apache.xmlbeans</groupId>
+          <artifactId>xmlbeans</artifactId>
+          <version>5.0.3</version>
+      </dependency>
+
+        <!-- Google API Client -->
+      <dependency>
+          <groupId>com.google.api-client</groupId>
+          <artifactId>google-api-client</artifactId>
+          <version>1.32.1</version>
+      </dependency>
+
+      <dependency>
+          <groupId>com.google.auth</groupId>
+          <artifactId>google-auth-library-oauth2-http</artifactId>
+          <version>1.1.0</version>
+      </dependency>
+
+        <!-- Si lograste instalar este localmente -->
+      <dependency>
+          <groupId>com.google.apis</groupId>
+          <artifactId>google-api-services-forms</artifactId>
+          <version>v1-rev20250218-2.0.0</version>
+      </dependency>
   </dependencies>
 
   <build>
@@ -43,6 +82,11 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
+        </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
