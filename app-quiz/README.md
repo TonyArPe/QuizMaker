@@ -37,7 +37,7 @@ mvn clean install
 
 - **Ejecutar la Aplicación:**
 ```bash
-java -jar target/QuizMaker-1.0.jar
+java -jar target/QuizMaker.jar
 ```
 
 - **Seleccionar el Documento de Texto:** Sigue las instrucciones en pantalla para elegir el archivo .docx que deseas procesar.
