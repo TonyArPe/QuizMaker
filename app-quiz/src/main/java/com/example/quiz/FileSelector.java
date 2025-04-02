@@ -6,22 +6,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import org.apache.poi.xwpf.usermodel.*;
 
 /**
  * Clase principal que gestiona la selección y análisis de archivos Word
  * para extraer preguntas de exámenes.
+ * 
  * @author TonyArPe
  * @version 1.0
  * @since 01/04/2025
  */
-
 public class FileSelector {
 
     private static final String DOCS_FOLDER = "app-quiz\\src\\docxFiles";
+
     /**
      * Método principal que inicia la aplicación.
+     * 
      * @param args Argumentos de línea de comandos (no utilizados).
      */
     public static void main(String[] args) {
@@ -54,15 +55,19 @@ public class FileSelector {
         scanner.close();
 
         // Llamar al método de análisis
-        analyzeFile(selectedFile);
+        List<String> questions = analyzeFile(selectedFile);
+
+        // Mostrar las preguntas extraídas
+        mostrarPreguntas(questions);
     }
 
     /**
      * Analiza el archivo proporcionado y extrae las preguntas de los test.
      * 
      * @param file Archivo .docx que será analizado.
+     * @return Lista de preguntas extraídas del archivo.
      */
-    private static void analyzeFile(File file) {
+    public static List<String> analyzeFile(File file) {
         System.out.println("Analizando el archivo: " + file.getAbsolutePath());
         List<String> questions = new ArrayList<>();
 
@@ -92,10 +97,16 @@ public class FileSelector {
 
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
-            return;
         }
+        return questions;
+    }
 
-        // Mostrar las preguntas extraídas
+    /**
+     * Muestra las preguntas extraídas del archivo.
+     * 
+     * @param questions Lista de preguntas extraídas.
+     */
+    public static void mostrarPreguntas(List<String> questions) {
         if (questions.isEmpty()) {
             System.out.println("No se encontraron preguntas en el archivo.");
         } else {
