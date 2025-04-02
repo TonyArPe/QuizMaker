@@ -2,34 +2,41 @@ package com.example.quiz;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
-import java.util.Arrays;
 
+/**
+ * Clase que proporciona una interfaz gráfica para seleccionar un archivo de preguntas,
+ * analizarlo y exportar las preguntas a un archivo Excel.
+ * 
+ * @author TonyArPe
+ * @version 1.2
+ * @since 02/04/2025
+ */
 public class QuizAppGUI extends JFrame {
     private static final long serialVersionUID = 1L;
-
-    // Componentes de la interfaz
     private JTextField fileNameField;
     private JTextArea outputArea;
     private JProgressBar progressBar;
 
+    /**
+     * Constructor que inicializa la interfaz gráfica.
+     */
     public QuizAppGUI() {
         setTitle("Quiz App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-        // Crear y configurar los componentes
         initializeComponents();
 
-        // Hacer visible la ventana
         setVisible(true);
     }
 
+    /**
+     * Inicializa y coloca los componentes de la interfaz gráfica.
+     */
     private void initializeComponents() {
-        // Panel principal con BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
 
         // Panel superior para la selección de archivo
@@ -55,59 +62,67 @@ public class QuizAppGUI extends JFrame {
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         mainPanel.add(progressBar, BorderLayout.SOUTH);
 
-        // Agregar panel principal al frame
         add(mainPanel);
 
         // Acción del botón para seleccionar archivo
-        selectFileButton.addActionListener(createFileSelectionListener());
+        selectFileButton.addActionListener(e -> selectAndProcessFile());
     }
 
-    private ActionListener createFileSelectionListener() {
-        return e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-            int returnValue = fileChooser.showOpenDialog(null);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                fileNameField.setText(selectedFile.getAbsolutePath());
-                outputArea.append("Archivo seleccionado: " + selectedFile.getAbsolutePath() + "\n");
+    /**
+     * Abre un diálogo para seleccionar un archivo y lo procesa.
+     */
+    private void selectAndProcessFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            fileNameField.setText(selectedFile.getAbsolutePath());
+            outputArea.append("Archivo seleccionado: " + selectedFile.getAbsolutePath() + "\n");
 
-                // Procesar el archivo seleccionado
-                processSelectedFile(selectedFile);
-            }
-        };
+            processSelectedFile(selectedFile);
+        }
     }
 
+    /**
+     * Procesa el archivo seleccionado: lo analiza y exporta las preguntas a un archivo Excel.
+     * 
+     * @param file Archivo seleccionado por el usuario.
+     */
     private void processSelectedFile(File file) {
-        // Validar que el archivo existe y es legible
         if (!file.exists() || !file.canRead()) {
             outputArea.append("Error: No se puede leer el archivo seleccionado.\n");
             return;
         }
 
-        // Simulación de lectura y extracción de preguntas del archivo
-        List<String> questions = Arrays.asList("Pregunta 1", "Pregunta 2", "Pregunta 3"); // Ejemplo de preguntas
-
-        // Actualizar la barra de progreso
         progressBar.setIndeterminate(true);
 
-        // Exportar las preguntas a un archivo Excel
-        exportQuestionsToExcel(questions);
+        new Thread(() -> {
+            try {
+                // Analizar el archivo para extraer las preguntas
+                List<String> preguntas = FileSelector.analizarArchivo(file);
 
-        // Detener la barra de progreso
-        progressBar.setIndeterminate(false);
+                if (preguntas.isEmpty()) {
+                    outputArea.append("No se encontraron preguntas válidas en el archivo.\n");
+                } else {
+                    // Exportar las preguntas a un archivo Excel en el escritorio del usuario
+                    String rutaCompletaExcel = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "Preguntas.xlsx";
+                    ExcelCreator.exportExcel(preguntas, rutaCompletaExcel);
+                    outputArea.append("Archivo Excel creado en: " + rutaCompletaExcel + "\n");
+                }
+            } catch (Exception e) {
+                outputArea.append("Error al procesar el archivo: " + e.getMessage() + "\n");
+            } finally {
+                progressBar.setIndeterminate(false);
+            }
+        }).start();
     }
 
-    private void exportQuestionsToExcel(List<String> questions) {
-        String desktopPath = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "Preguntas.xlsx";
-        try {
-            ExcelCreator.exportExcel(questions, desktopPath);
-            outputArea.append("Archivo Excel creado en: " + desktopPath + "\n");
-        } catch (Exception e) {
-            outputArea.append("Error al crear el archivo Excel: " + e.getMessage() + "\n");
-        }
-    }
-
+    /**
+     * Método principal que inicia la aplicación.
+     * 
+     * @param args Argumentos de línea de comandos (no utilizados).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(QuizAppGUI::new);
     }
