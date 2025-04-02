@@ -28,7 +28,7 @@ public class FileSelector {
         Scanner scanner = new Scanner(System.in);
         File docsDirectory = new File(DOCS_FOLDER);
 
-        // Verifica si la carpeta 'docs' existe
+        // Verifica si la carpeta docxFiles existe y es un directorio
         if (!docsDirectory.exists() || !docsDirectory.isDirectory()) {
             System.out.println("La carpeta '" + DOCS_FOLDER
                     + "' no existe. Por favor, créala y coloca los archivos a analizar en ella.");
