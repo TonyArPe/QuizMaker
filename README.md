@@ -167,3 +167,7 @@ Este proyecto se distribuye bajo la Licencia MIT. Consulta el archivo **LICENSE*
 ## Autores
 
 **TonyArPe:** Desarrollador principal y creador del proyecto.
+
+## Imagenes de Muestra
+![alt text](image.png)
+![alt text](image-1.png)
