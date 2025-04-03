@@ -1,4 +1,21 @@
-/.idea/
-/.vscode/
-/*.iml
+# Archivos de configuración del IDE
+.idea/
+.vscode/
+*.iml
+
+# Archivos de compilación Java
 *.class
+*.log
+
+# Carpetas de Maven
+target/
+
+# Archivos temporales de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Configuración de Launch4j o ejecutables generados
+*.exe
+*.bat
+*.dll
+*.launch4j.xml
