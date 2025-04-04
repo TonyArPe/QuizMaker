@@ -1,173 +1,130 @@
 # QuizMaker
 
-**Versión 1.3**
-## Descripción
+**Versión 1.4 - Proyecto en desarrollo**
 
-QuizMaker es una aplicación desarrollada en Java que permite extraer preguntas y respuestas de documentos de texto en formato .docx y generar hojas de cálculo en formato Excel. Estas hojas pueden importarse posteriormente a Google Forms para crear tests automatizados, facilitando su implementación en plataformas como WordPress.​
-## Estado del Proyecto
+QuizMaker es una aplicación de escritorio desarrollada en **Java 21** que permite extraer preguntas tipo test desde documentos `.docx` y exportarlas automáticamente a formatos `.xlsx` (Excel) y `.txt` (formato **Aiken** compatible con Moodle). Todo esto a través de una interfaz gráfica amigable construida con **Swing**.
 
-**:construction:** Proyecto en desarrollo :construction:​
-## Características
-# QuizMaker
+Su objetivo es facilitar la creación de tests automatizados para ser utilizados en plataformas educativas como **Google Forms**, **Moodle** o integraciones con **WordPress**.
 
-**Versión 1.2 - Proyecto en desarrollo**
+---
 
-QuizMaker es una aplicación de escritorio desarrollada en **Java 21** con interfaz gráfica mediante **Swing**. Su objetivo principal es facilitar la creación de tests automatizados a partir de archivos `.docx`, extrayendo las preguntas contenidas y exportándolas a un archivo `.xlsx` listo para ser usado en plataformas como **Google Forms** o integrarse en sitios web (por ejemplo, mediante WordPress).
+## Características Principales
 
-## Características
+- Interfaz gráfica intuitiva (Swing).
+- Soporte para **exportación a Excel (.xlsx)**.
+- Soporte para **exportación a texto plano en formato Aiken (.txt)**.
+- Botón de salida para cerrar la aplicación de forma segura.
+- Separación clara entre preguntas (salto entre tests).
+- Compatible con Google Forms y Moodle.
+- Preparado para futuras integraciones con la API de Google Forms.
+- Generación de ejecutables `.exe` con **Launch4j**.
+- Documentado con **Javadoc**.
 
-- Interfaz amigable con **Swing** (sin consola).
-- Lectura y análisis automático de archivos `.docx`.
-- Exportación directa de preguntas a archivos `.xlsx`.
-- Generación de ejecutables `.exe` mediante **Launch4j**.
-- Soporte actual para español (preguntas tipo `Pregunta 1:` o `1.`).
-- Proyecto modular y documentado con **Javadoc**.
-- Preparado para futuras integraciones con **Google Forms API**.
+---
 
 ## Tecnologías Usadas
 
 - **Java 21**
 - **Apache Maven**
-- **Swing (GUI)**
-- **Apache POI** (lectura `.docx` y generación `.xlsx`)
-- **Launch4j** (generación del ejecutable)
-- **Google API Client** *(preparado para integración futura con Forms)*
+- **Swing** (Interfaz gráfica)
+- **Apache POI** (lectura de `.docx`, generación de `.xlsx`)
+- **Launch4j** (creación de ejecutables para Windows)
+- **Google API Client** _(listo para integración con Google Forms)_
+
+---
 
 ## Requisitos Previos
 
-- JDK 21 o superior.
-- Maven instalado y configurado.
-- Sistema operativo Windows (para `.exe` generado con Launch4j).
+- **JDK 21** o superior
+- **Apache Maven** instalado y configurado
+- **Windows** (para generar o ejecutar el `.exe`)
 
-## Instalación y Uso
+---
+
+## Instalación y Ejecución
 
 ### Clonar el repositorio
+
 ```bash
 git clone https://github.com/TonyArPe/QuizMaker.git
 cd QuizMaker/app-quiz
 ```
 
-### Generar el `.jar` ejecutable con dependencias
+### Generar el .jar ejecutable con dependencias
+
 ```bash
 mvn clean package
 ```
 
-El archivo generado se encontrará en `target/demo-1.0-jar-with-dependencies.jar`.
+**El .jar se genera en: target/demo-1.0-jar-with-dependencies.jar**
 
-### Crear el ejecutable `.exe`
-Usa **Launch4j** y configura como ruta del `.jar` el archivo generado. Establece la clase principal en:
-```
-com.example.quiz.QuizAppGUI
-```
+### Crear el .exe con Launch4j
 
-## Cómo usar la aplicación
+1. Abre Launch4j
 
-1. Ejecuta `QuizMaker.exe` o el `.jar`.
-2. Selecciona un archivo `.docx` con preguntas.
-3. Las preguntas serán analizadas y exportadas automáticamente como `Preguntas.xlsx` en tu Escritorio.
-4. Ese archivo es compatible con **Google Forms**.
+2. En Jar, selecciona:
+   _target/demo-1.0-jar-with-dependencies.jar_
+
+3. En Output, define la ruta de salida del `.exe`
+
+4. En Main class, escribe:
+   _com.example.quiz.QuizAppGUI_
+
+5. **Opcional:** agrega un icono .ico
+
+6. Haz clic en Build Wrapper
+
+## ¿Cómo se usa?
+
+1.  Ejecuta `QuizMaker.exe` o el `.jar.`
+
+2.  Selecciona un archivo .docx con preguntas.
+
+3.  Puedes:
+
+    - Exportar a Excel (.xlsx) con un botón.
+
+    - Exportar a Aiken (.txt) con otro botón.
+
+Ambos archivos se guardan automáticamente en tu Escritorio.
 
 ## Estructura del Proyecto
 
-- `src/main/java/com/example/quiz`
-  - `QuizAppGUI.java` → Interfaz gráfica.
-  - `MainApp.java` → Versión por consola (legacy).
-  - `FileSelector.java` → Lógica para lectura y análisis de `.docx`.
-  - `ExcelCreator.java` → Lógica para exportación a Excel.
+**QuizAppGUI.java →** Interfaz gráfica principal.
+
+**MainApp.java →** Versión por consola (modo legacy).
+
+**FileSelector.java →** Lógica de lectura de .docx.
+
+**ExcelCreator.java →** Exportación a .xlsx.
+
+**AikenFormatter.java →** Conversión al formato Aiken.
+
+**TxtCreator.java →** Exportación a .txt en formato Aiken.
 
 ## Notas Adicionales
 
-- El análisis de preguntas está basado en expresiones regulares que detectan encabezados del tipo `1. Pregunta` o `Pregunta 1`.
-- Próximamente se integrará la subida automática de las preguntas a Google Forms.
-- Se recomienda cerrar el Excel de salida antes de generar uno nuevo para evitar errores de acceso denegado.
+- El análisis se basa en encabezados como 1. Pregunta o Pregunta 1:.
 
----
+- El botón de exportación a .txt genera una pregunta por bloque, separada por salto de línea.
 
-- **Interfaz Gráfica Intuitiva:** Permite a los usuarios seleccionar archivos .docx y generar archivos Excel de manera sencilla.​
+- Se recomienda cerrar el archivo Excel antes de volver a generar uno nuevo.
 
-- **Extracción Automática:** Analiza documentos .docx para identificar preguntas y respuestas.​
+- El ejecutable puede personalizarse con icono y nombre con Launch4j.
 
-- **Generación de Hojas de Cálculo:** Crea archivos Excel compatibles con Google Forms.​
+- Google Forms aún no está conectado, pero el formato generado es compatible.
 
-- **Integración con Google Forms:** Facilita la creación de tests en línea a partir de documentos existentes.​
+## Autor
 
-## Instalación
-### Prerrequisitos
-
-- **Java 21** o superior.​
-
-- **Apache Maven**​
-
-### Clonar el Repositorio:
-```bash
-git clone https://github.com/TonyArPe/QuizMaker.git
-```
-
-### Navegar al Directorio del Proyecto:
-```bash
-cd QuizMaker
-```
-
-### Compilar el Proyecto con Maven:
-```bash
-mvn clean install
-```
-
-## Uso
-### Ejecutar la Aplicación:
-```bash
-java -jar target/QuizMaker.jar
-```
-
-## Pasos para Utilizar la Aplicación:
-
-- **Seleccionar el Documento de Texto:** Al iniciar la aplicación, utiliza la interfaz gráfica para seleccionar el archivo .docx que deseas procesar.​
-
-- **Generar la Hoja de Cálculo:** La aplicación analizará el documento y creará automáticamente un archivo Excel compatible con Google Forms en el escritorio del usuario.​
-
-## Tecnologías Utilizadas
-
-- **Java 21:** Lenguaje de programación principal.​
-
-- **Apache POI:** Biblioteca para manipulación de documentos de Microsoft Office.​
-
-- **Swing:** Biblioteca para la creación de interfaces gráficas en Java.​
-
-- **Javadoc:** Para la documentación del código.​
-
-- **Google Forms API:** Para la integración y creación automatizada de formularios.​
-    Apache POI
-
-## Contribución
-
-Si deseas contribuir al desarrollo de QuizMaker:
-
-- Fork del Repositorio.
-
-- Crear una Nueva Rama:
-```bash
-git checkout -b feature/NuevaCaracteristica
-```
-
-- Realizar Cambios y Confirmar:
-```bash
-git commit -m "Descripción de la nueva característica"
-```
-
-- Enviar los Cambios:
-```bash
-git push origin feature/NuevaCaracteristica
-```
-
-- Abrir una Pull Request.
+**TonyArPe** – Desarrollador y creador del proyecto.
+**Repositorio oficial:** `github.com/TonyArPe/QuizMaker`
 
 ## Licencia
 
-Este proyecto se distribuye bajo la Licencia MIT. Consulta el archivo **LICENSE** para más detalles.​
-## Autores
-
-**TonyArPe:** Desarrollador principal y creador del proyecto.
+Este proyecto está licenciado bajo la Licencia **MIT**.
+Consulta el archivo **LICENSE** para más información.
 
 ## Imagenes de Muestra
+
 ![alt text](image.png)
 ![alt text](image-1.png)
