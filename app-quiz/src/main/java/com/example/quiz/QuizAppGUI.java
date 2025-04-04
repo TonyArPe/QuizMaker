@@ -8,7 +8,8 @@ import java.util.List;
 /**
  * Clase que proporciona una interfaz gráfica para seleccionar un archivo de
  * preguntas,
- * analizarlo y exportar las preguntas a un archivo Excel y/o TXT (formato Aiken).
+ * analizarlo y exportar las preguntas a un archivo Excel y/o TXT (formato
+ * Aiken).
  * 
  * @author TonyArPe
  * @version 1.4
@@ -21,7 +22,6 @@ public class QuizAppGUI extends JFrame {
     private JProgressBar progressBar;
     private JButton exportToTxtButton; // Ahora es un atributo de clase
     private List<String> preguntasExtraidas;
-    
 
     public QuizAppGUI() {
         setTitle("Quiz App");
@@ -30,28 +30,35 @@ public class QuizAppGUI extends JFrame {
         setLocationRelativeTo(null);
         initializeComponents();
         setVisible(true);
+        System.out.println(">> Versión 1.3.3 - Probando cambios recientes");
     }
 
     private void initializeComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
 
-        // Panel superior para selección de archivo
-        JPanel topPanel = new JPanel(new FlowLayout());
+        // Panel superior general con GridLayout 2x1
+        JPanel topContainer = new JPanel(new GridLayout(2, 1, 5, 5));
+
+        // Panel 1: selección de archivo
+        JPanel topPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel instructionLabel = new JLabel("Seleccione el archivo de preguntas (.docx):");
         fileNameField = new JTextField(30);
         JButton selectFileButton = new JButton("Seleccionar Archivo");
+        topPanel1.add(instructionLabel);
+        topPanel1.add(fileNameField);
+        topPanel1.add(selectFileButton);
+
+        // Panel 2: botones de acción
+        JPanel topPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         exportToTxtButton = new JButton("Exportar a TXT (Aiken)");
         exportToTxtButton.setEnabled(false);
         JButton salirButton = new JButton("Salir");
+        topPanel2.add(exportToTxtButton);
+        topPanel2.add(salirButton);
 
-
-        // Añadirlos al panel
-        topPanel.add(instructionLabel);
-        topPanel.add(fileNameField);
-        topPanel.add(selectFileButton);
-        topPanel.add(exportToTxtButton);
-        topPanel.add(salirButton);
-
+        // Añadir ambos al contenedor
+        topContainer.add(topPanel1);
+        topContainer.add(topPanel2);
 
         // Área de salida
         outputArea = new JTextArea(20, 50);
@@ -62,33 +69,35 @@ public class QuizAppGUI extends JFrame {
         progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
 
-        // Añadir al panel
-        mainPanel.add(topPanel, BorderLayout.NORTH);
+        // Agregar todo al main panel
+        mainPanel.add(topContainer, BorderLayout.NORTH);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         mainPanel.add(progressBar, BorderLayout.SOUTH);
         add(mainPanel);
 
-        // Botón seleccionar archivo
+        // Accion seleccionar archivo
         selectFileButton.addActionListener(e -> selectAndProcessFile());
 
-        // Botón exportar a Aiken
+        // Accion exportar Aiken
         exportToTxtButton.addActionListener(ev -> {
             if (preguntasExtraidas == null || preguntasExtraidas.isEmpty()) {
                 outputArea.append("No hay preguntas para exportar.\n");
                 return;
             }
-
-            String rutaTxt = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "PreguntasAiken.txt";
+            String rutaTxt = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
+                    + "PreguntasAiken.txt";
             TxtCreator.exportToAikenFormat(preguntasExtraidas, rutaTxt);
             outputArea.append("Preguntas exportadas en formato Aiken a: " + rutaTxt + "\n");
         });
 
+        // Accion salir
         salirButton.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas salir?", "Confirmar salida",
+                    JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
-        });        
+        });
     }
 
     private void selectAndProcessFile() {
