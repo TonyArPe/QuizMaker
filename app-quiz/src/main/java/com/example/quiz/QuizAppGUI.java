@@ -20,7 +20,8 @@ public class QuizAppGUI extends JFrame {
     private JTextField fileNameField;
     private JTextArea outputArea;
     private JProgressBar progressBar;
-    private JButton exportToTxtButton; // Ahora es un atributo de clase
+    private JButton exportToExcelButton; // Botón para Excel
+    private JButton exportToTxtButton;   // Botón para Aiken
     private List<String> preguntasExtraidas;
 
     public QuizAppGUI() {
@@ -50,9 +51,14 @@ public class QuizAppGUI extends JFrame {
 
         // Panel 2: botones de acción
         JPanel topPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        exportToExcelButton = new JButton("Exportar a Excel");
         exportToTxtButton = new JButton("Exportar a TXT (Aiken)");
-        exportToTxtButton.setEnabled(false);
         JButton salirButton = new JButton("Salir");
+
+        exportToExcelButton.setEnabled(false);
+        exportToTxtButton.setEnabled(false);
+
+        topPanel2.add(exportToExcelButton);
         topPanel2.add(exportToTxtButton);
         topPanel2.add(salirButton);
 
@@ -75,22 +81,32 @@ public class QuizAppGUI extends JFrame {
         mainPanel.add(progressBar, BorderLayout.SOUTH);
         add(mainPanel);
 
-        // Accion seleccionar archivo
+        // Acción seleccionar archivo
         selectFileButton.addActionListener(e -> selectAndProcessFile());
 
-        // Accion exportar Aiken
+        // Acción exportar a Excel
+        exportToExcelButton.addActionListener(ev -> {
+            if (preguntasExtraidas == null || preguntasExtraidas.isEmpty()) {
+                outputArea.append("No hay preguntas para exportar.\n");
+                return;
+            }
+            String rutaExcel = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "Preguntas.xlsx";
+            ExcelCreator.exportExcel(preguntasExtraidas, rutaExcel);
+            outputArea.append("Archivo Excel creado en: " + rutaExcel + "\n");
+        });
+
+        // Acción exportar a Aiken
         exportToTxtButton.addActionListener(ev -> {
             if (preguntasExtraidas == null || preguntasExtraidas.isEmpty()) {
                 outputArea.append("No hay preguntas para exportar.\n");
                 return;
             }
-            String rutaTxt = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
-                    + "PreguntasAiken.txt";
+            String rutaTxt = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "PreguntasAiken.txt";
             TxtCreator.exportToAikenFormat(preguntasExtraidas, rutaTxt);
             outputArea.append("Preguntas exportadas en formato Aiken a: " + rutaTxt + "\n");
         });
 
-        // Accion salir
+        // Acción salir
         salirButton.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas salir?", "Confirmar salida",
                     JOptionPane.YES_NO_OPTION);
@@ -138,18 +154,16 @@ public class QuizAppGUI extends JFrame {
                 if (preguntas.isEmpty()) {
                     outputArea.append("No se encontraron preguntas válidas en el archivo.\n");
                 } else {
-                    // Exportar a Excel
-                    String rutaExcel = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "Preguntas.xlsx";
-                    ExcelCreator.exportExcel(preguntas, rutaExcel);
-                    outputArea.append("Archivo Excel creado en: " + rutaExcel + "\n");
-
-                    // Habilitar botón de exportación a Aiken
-                    SwingUtilities.invokeLater(() -> exportToTxtButton.setEnabled(true));
+                    // Activar botones
+                    SwingUtilities.invokeLater(() -> {
+                        exportToTxtButton.setEnabled(true);
+                        exportToExcelButton.setEnabled(true);
+                    });
 
                     // Mensaje de éxito
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this,
-                            "¡Exportación completada!\nArchivo guardado en el escritorio.", "Éxito",
-                            JOptionPane.INFORMATION_MESSAGE));
+                            "¡Archivo procesado correctamente! Ahora puedes exportar a Excel o TXT (Aiken).",
+                            "Éxito", JOptionPane.INFORMATION_MESSAGE));
                 }
             } catch (Exception e) {
                 outputArea.append("Error al procesar el archivo: " + e.getMessage() + "\n");

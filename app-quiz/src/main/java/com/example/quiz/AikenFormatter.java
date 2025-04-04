@@ -40,7 +40,7 @@ public class AikenFormatter {
             }
 
             if(respuesta != null){
-                aiken.append("ANSWER: ").append(respuesta);
+                aiken.append("ANSWER: ").append(respuesta).append("\n");
                 aikenConvertidas.add(aiken.toString());
             }else{
                 System.out.println("Error: No se encontró respuesta en la pregunta: " + pregunta);
