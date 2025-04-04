@@ -10,6 +10,9 @@ import java.util.List;
  * Clase que exporta preguntas a un archivo .txt en formato Aiken compatible con
  * Moodle.
  * Cada entrada en la lista debe seguir la estructura del formato Aiken.
+ * @ author TonyArPe
+ * @ version 1.4
+ * @ since 04/04/2025
  **/
 public class TxtCreator {
     /**
