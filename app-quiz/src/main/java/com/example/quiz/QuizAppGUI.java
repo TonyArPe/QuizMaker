@@ -21,6 +21,7 @@ public class QuizAppGUI extends JFrame {
     private JProgressBar progressBar;
     private JButton exportToTxtButton; // Ahora es un atributo de clase
     private List<String> preguntasExtraidas;
+    
 
     public QuizAppGUI() {
         setTitle("Quiz App");
@@ -41,12 +42,16 @@ public class QuizAppGUI extends JFrame {
         JButton selectFileButton = new JButton("Seleccionar Archivo");
         exportToTxtButton = new JButton("Exportar a TXT (Aiken)");
         exportToTxtButton.setEnabled(false);
+        JButton salirButton = new JButton("Salir");
+
 
         // Añadirlos al panel
         topPanel.add(instructionLabel);
         topPanel.add(fileNameField);
         topPanel.add(selectFileButton);
         topPanel.add(exportToTxtButton);
+        topPanel.add(salirButton);
+
 
         // Área de salida
         outputArea = new JTextArea(20, 50);
@@ -77,6 +82,13 @@ public class QuizAppGUI extends JFrame {
             TxtCreator.exportToAikenFormat(preguntasExtraidas, rutaTxt);
             outputArea.append("Preguntas exportadas en formato Aiken a: " + rutaTxt + "\n");
         });
+
+        salirButton.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        });        
     }
 
     private void selectAndProcessFile() {
