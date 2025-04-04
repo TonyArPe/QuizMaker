@@ -1,3 +1,5 @@
+com\example\quiz\AikenFormatter.class
+com\example\quiz\TxtCreator.class
 com\example\quiz\MainApp.class
 com\example\quiz\QuizAppGUI.class
 com\example\quiz\FileSelector.class
